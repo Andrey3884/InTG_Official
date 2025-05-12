@@ -1,0 +1,101 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Реклама в TikTok</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .form-container {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      width: 100%;
+    }
+    h1 {
+      margin-bottom: 20px;
+      font-size: 24px;
+      text-align: center;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #ff0050;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #e60045;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h1>Реклама в TikTok</h1>
+    <form id="contactForm">
+      <input type="text" name="name" placeholder="Ваше имя" required />
+      <input type="tel" name="phone" placeholder="Телефон / Telegram" required />
+      <textarea name="message" placeholder="Что хотите продвигать?" required></textarea>
+      <button type="submit">Отправить</button>
+    </form>
+  </div>
+
+  <script>
+    const TOKEN = '7846135704:AAGcV2Wz2LdIJfktuEg0q9CE6vn_T9jwPBc';
+    const CHAT_ID = '7260538178';
+    const URI_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`;
+
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const name = form.name.value;
+      const phone = form.phone.value;
+      const message = form.message.value;
+      const text = `<b>Новая заявка с сайта</b>
+👤 Имя: ${name}
+📱 Контакт: ${phone}
+💬 Сообщение: ${message}`;
+
+      fetch(URI_API, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          chat_id: CHAT_ID,
+          text: text,
+          parse_mode: 'HTML',
+        })
+      })
+      .then(res => {
+        alert("Заявка отправлена!");
+        form.reset();
+      })
+      .catch(err => {
+        alert("Ошибка при отправке.");
+        console.error(err);
+      });
+    });
+  </script>
+</body>
+</html>
